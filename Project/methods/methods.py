@@ -64,7 +64,7 @@ def DetectFaces(img):
     Detect faces in the frame
     """
     # Using the Haar Cascade Classifier
-    face_cascade = cv2.CascadeClassifier('sources/haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('methods/haarcascade_frontalface_default.xml')
 
     # Applying grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

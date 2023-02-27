@@ -15,15 +15,17 @@ pip install -r requirements.txt
 ```
 
 Once you have installed the dependencies, you can run the code using the following command:
+
 ```bash
-python Project/Project.py
+cd Project
+python Project.py
 ```
 
 This will launch the system, which will prompt you to scan a book's ISBN code or detect a face. Follow the instructions provided by the system to use its various features.
 
 ## Future Work
 
-**Although this project was not completed due to its elimination from the competition**, there is still room for further development. Some ideas for future work include:
+**Although this project was not completed** due to its **elimination from the competition**, there is still room for further development. Some ideas for future work include:
 
 - Implementing a face recognition system to match individuals with their library accounts
 - Integrating the system with existing library management software to improve the borrowing and return process

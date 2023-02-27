@@ -1,4 +1,5 @@
-from sources import *
+import methods
+from methods import cv2
 
 def main():
     
@@ -13,18 +14,18 @@ def main():
         img_flip = cv2.flip(img,1)
 
         # Detect faces
-        DetectFaces(img_flip)
+        methods.DetectFaces(img_flip)
 
         # Detect barcode
-        DetectBarcode(img_flip)
+        methods.DetectBarcode(img_flip)
 
         # Show the frame
-        cv2.imshow('User',img_flip)
+        cv2.imshow('User', img_flip)
         
         cv2.waitKey(1)
 
     # Output the result
-    OutputTXT()
+    methods.OutputTXT()
 
 if __name__ == "__main__":
     main()
