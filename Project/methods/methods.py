@@ -1,6 +1,7 @@
 from isbnlib import *
 import cv2
 import numpy as np
+from classes.book import Book
 
 # Global variables
 result_dictionary = {}
@@ -113,3 +114,13 @@ def GetResult():
     Getter for the result dictionary 
     """
     return result_dictionary
+
+def GatherBook():
+    book = Book(
+        result_dictionary["ISBN-13"],
+        result_dictionary["Title"],
+        result_dictionary["Authors"],
+        result_dictionary["Publisher"],
+        result_dictionary["Year"],
+        result_dictionary["Language"])
+    return book
