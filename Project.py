@@ -1,5 +1,6 @@
 import methods
 from methods import cv2
+from database.SQLiteDB import SQLiteDataBase
 
 def main():
     
@@ -28,4 +29,18 @@ def main():
     methods.OutputTXT()
 
 if __name__ == "__main__":
-    main()
+    # Example Database usage
+    db = SQLiteDataBase(':memory:')
+
+    # Creating a table
+    create_table_query = "CREATE TABLE IF NOT EXISTS my_table (id INTEGER, name TEXT, age INTEGER)"
+    db.ExecuteSQL(create_table_query)
+
+    # Inserting data into the table
+    db.AddToTable("my_table", (3, "Jack", 20))
+    db.AddToTable("my_table", (4, "John", 21))
+
+    # Selecting data from the table
+    print(db.GetTable("my_table"))
+
+    # main()
