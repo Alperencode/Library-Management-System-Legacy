@@ -59,6 +59,8 @@ def DetectBarcode(img):
 
             # Writing the title of the book
             cv2.putText(img, isbn_meta["Title"], (int(corners[0][0][0]), int(corners[0][0][1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color=(0, 255, 0), thickness=2)
+        else:
+            print("Invalid or Unknown ISBN")
 
 def DetectFaces(img):
     """
@@ -108,6 +110,32 @@ def OutputTXT():
                     f.write("\n")
                 else:
                     f.write(f"{key}: {value}\n")
+
+def ReadISBN(cap):
+    """
+    Read the ISBN from the barcode
+    """
+    while cv2.waitKey(1) == -1:
+        # Read the frame
+        success, img = cap.read()
+        
+        # Flip the image for mirror effect
+        img_flip = cv2.flip(img,1)
+
+        # Detect faces
+        # DetectFaces(img_flip)
+
+        # Detect barcode
+        DetectBarcode(img_flip)
+
+        # Show the frame
+        cv2.imshow('User', img_flip)
+        
+        # If any result is found, break the loop
+        if GetResult():
+            break
+
+        cv2.waitKey(1)
 
 def GetResult():
     """ 
