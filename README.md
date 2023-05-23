@@ -34,6 +34,38 @@ using the barcode scanner. Follow the instructions provided by the system to ret
 
 <img src="images/Project-Sample.png">
 
+## Directory Structure
+
+```
+Library-Book-Matching-System
+├── classes
+│   └── book.py
+├── database
+│   ├── __init__.py
+│   ├── BookDB.py
+│   └── SQLiteDB.py
+├── images
+│   └── Project-Sample.png
+├── methods
+│   └── methods.py
+├── Sub-Algorithms
+│   ├── Barcode-Detection
+│   ├── Barcode-to-ISBN
+│   ├── Face-Detection
+│   └── Yolo
+│       ├── Yolo-320
+│       └── Yolo-Tiny
+├── tests
+│   ├── __init__.py
+│   └── test_SQLiteDB.py
+├── .gitignore
+├── __init__.py
+├── books.db
+├── Project.py
+├── README.md
+└── requirements.txt
+```
+
 ## Future Work
 
 Although this project is currently focused on barcode recognition for ISBN codes, there is potential for further development. Some ideas for future enhancements include:
