@@ -1,4 +1,5 @@
 from database.SQLiteDB import SQLiteDataBase
+from classes.book import Book
 
 class BookDB(SQLiteDataBase):
     def __init__(self, databaseName):
@@ -17,37 +18,28 @@ class BookDB(SQLiteDataBase):
         self.ExecuteSQL(query)
 
     def AddBook(self, book):
-        self.AddToTable("books", (book.isbn,
-        book.title,
-        book.authors[0],
-        book.publisher,
-        book.year,
-        book.language)
-        )
+        self.AddToTable("books", (   
+            book.GetISBN(),
+            book.GetTitle(),
+            book.GetAuthor(),
+            book.GetPublisher(),
+            book.GetYear(),
+            book.GetLanguage()
+        ))
 
     def GetBooks(self):
         return self.GetTable("books")
 
-    def UpdateBook(self, book):
-        query = """UPDATE book SET
-        title = ?,
-        author = ?,
-        publisher = ?,
-        year = ?,
-        language = ?
-        WHERE isbn = ?"""
-        self.ExecuteSQL(query, (book.title, book.author, book.publisher, book.year, book.language, book.isbn))
-
     def DeleteBook(self, isbn):
-        query = "DELETE FROM book WHERE isbn = ?"
+        query = "DELETE FROM books WHERE isbn = ?"
         self.ExecuteSQL(query, (isbn,))
 
     def SearchByArg(self, arg, value):
         """
-        Example query: SELECT * FROM book WHERE (arg) LIKE (value)
+        Example query: SELECT * FROM books WHERE (arg) LIKE (value)
         """
-        query = "SELECT * FROM book WHERE ? LIKE ?"
-        self.cursor.execute(query, (arg, value))
+        query = "SELECT * FROM books WHERE {} LIKE ?".format(arg)
+        self.cursor.execute(query, ('%' + str(value) + '%',))
         return self.cursor.fetchall()
 
     def __del__(self):
