@@ -24,3 +24,23 @@ class Book:
     
     def GetLanguage(self):
         return self.__language
+
+    def GetBookInfo(self):
+        return {
+            'isbn': self.GetISBN(),
+            'title': self.GetTitle(),
+            'author': self.GetAuthor(),
+            'publisher': self.GetPublisher(),
+            'year': self.GetYear(),
+            'language': self.GetLanguage()
+        }
+    
+    def GetBookInfoAsTuple(self):
+        return (
+            self.GetISBN(),
+            self.GetTitle(),
+            self.GetAuthor(),
+            self.GetPublisher(),
+            self.GetYear(),
+            self.GetLanguage()
+        )
