@@ -4,7 +4,7 @@ import numpy as np
 from classes.book import Book
 
 # Global variables
-result_dictionary = {}
+book_dictionary = {}
 last_book = ""
 
 def ParseISBN(isbn):
@@ -25,10 +25,10 @@ def ParseMeta(isbn_meta):
     """
     global last_book
     for key, value in isbn_meta.items():
-        result_dictionary[key] = value
+        book_dictionary[key] = value
 
     if isbn_meta["Title"] != last_book:
-        for key, value in result_dictionary.items():
+        for key, value in book_dictionary.items():
             print(f"{key}: {value}")
         last_book = isbn_meta["Title"]
 
@@ -62,55 +62,6 @@ def DetectBarcode(img):
         else:
             print("Invalid or Unknown ISBN")
 
-def DetectFaces(img):
-    """
-    Detect faces in the frame
-    """
-    # Using the Haar Cascade Classifier
-    face_cascade = cv2.CascadeClassifier('methods/haarcascade_frontalface_default.xml')
-
-    # Applying grayscale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # Detecting faces
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)
-    
-    for (x,y,w,h) in faces:
-            # These variables represents the coordinates of the rectangle
-            # Respectively: x_start, y_start, x_end, y_end
-            
-            # The detected zones (Gray)
-            roi_gray = gray[y:y+h, x:x+w]
-
-            # Rectange BGR, thickness, width and height
-            color = (0, 0, 255)
-            border = 2
-            width = x + w
-            height = y + h
-
-            # Drawing rectangle
-            if faces.all():
-                cv2.rectangle(img, (x, y), (width, height), color, border)
-                cv2.putText(img, "Face Found", (x,y-5), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color=color, thickness=2)
-
-def OutputTXT():
-    """
-    Output the result dictionary to a txt file
-    """
-    if GetResult():
-        # Create a txt file
-        with open('output.txt', 'w', encoding='utf-8') as f:
-            # Write the result dictionary to the txt file
-            for key, value in result_dictionary.items():
-                # If the value is a list, write the list items
-                if type(result_dictionary[key]) == list:
-                    f.write(f"{key}: ")
-                    for item in result_dictionary[key]:
-                        f.write(f"{item}, ") if item != result_dictionary[key][-1] else f.write(f"{item}")
-                    f.write("\n")
-                else:
-                    f.write(f"{key}: {value}\n")
-
 def ReadISBN(cap):
     """
     Read the ISBN from the barcode
@@ -139,16 +90,16 @@ def ReadISBN(cap):
 
 def GetResult():
     """ 
-    Getter for the result dictionary 
+    Getter for the book dictionary 
     """
-    return result_dictionary
+    return book_dictionary
 
 def GatherBook():
     book = Book(
-        result_dictionary["ISBN-13"],
-        result_dictionary["Title"],
-        result_dictionary["Authors"],
-        result_dictionary["Publisher"],
-        result_dictionary["Year"],
-        result_dictionary["Language"])
+        book_dictionary["ISBN-13"],
+        book_dictionary["Title"],
+        book_dictionary["Authors"],
+        book_dictionary["Publisher"],
+        book_dictionary["Year"],
+        book_dictionary["Language"])
     return book
