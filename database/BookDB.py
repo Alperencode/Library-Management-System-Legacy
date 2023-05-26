@@ -18,9 +18,6 @@ class BookDB(SQLiteDataBase):
         self.ExecuteSQL(query)
 
     def UpdateBook(self, book):
-        if not isinstance(book, Book):
-            raise TypeError("book must be an instance of Book class")
-        
         db_check = self.SearchByArg("isbn", book.GetISBN())
 
         if db_check:
@@ -30,11 +27,8 @@ class BookDB(SQLiteDataBase):
             raise ValueError("book not found in database")
 
     def AddBook(self, book):
-        if not isinstance(book, Book):
-            raise TypeError("book must be an instance of Book class")
-        
         db_check = self.SearchByArg("isbn", book.GetISBN())
-        
+
         if db_check:
             self.UpdateBook(book)
             return
