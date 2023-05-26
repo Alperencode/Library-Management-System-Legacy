@@ -5,7 +5,6 @@ from classes.book import Book
 
 # Global variables
 book_dictionary = {}
-last_book = ""
 
 def ParseISBN(isbn):
     """
@@ -17,20 +16,6 @@ def ParseISBN(isbn):
         return False
     else:
         return meta(isbn)
-
-def ParseMeta(isbn_meta):
-    """
-    Parsing the metadata from the ISBN
-    If data is valid, update the result dictionary
-    """
-    global last_book
-    for key, value in isbn_meta.items():
-        book_dictionary[key] = value
-
-    if isbn_meta["Title"] != last_book:
-        for key, value in book_dictionary.items():
-            print(f"{key}: {value}")
-        last_book = isbn_meta["Title"]
 
 def DetectBarcode(img):
     """
@@ -49,18 +34,8 @@ def DetectBarcode(img):
         int_corners = np.array(corners, dtype=np.int32)
         cv2.polylines(img, [int_corners], True, (0, 255, 0), 5)
 
-        # Parsing ISBN data
-        isbn_meta = ParseISBN(decoded_info[0])
-
-        # If ISBN is valid
-        if isbn_meta:
-            # Parsing the metadata
-            ParseMeta(isbn_meta)
-
-            # Writing the title of the book
-            cv2.putText(img, isbn_meta["Title"], (int(corners[0][0][0]), int(corners[0][0][1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color=(0, 255, 0), thickness=2)
-        else:
-            print("Invalid or Unknown ISBN")
+        # Returning the barcode data
+        return decoded_info[0]
 
 def ReadISBN(cap):
     """
@@ -73,33 +48,34 @@ def ReadISBN(cap):
         # Flip the image for mirror effect
         img_flip = cv2.flip(img,1)
 
-        # Detect faces
-        # DetectFaces(img_flip)
-
-        # Detect barcode
-        DetectBarcode(img_flip)
-
         # Show the frame
         cv2.imshow('User', img_flip)
+
+        # Detect barcode
+        barcode = DetectBarcode(img_flip)
         
-        # If any result is found, break the loop
-        if GetResult():
-            break
+        # If barcode is valid
+        if barcode:
+            # Try to parse the ISBN
+            isbn_meta = ParseISBN(barcode)
+
+            # If ISBN is valid
+            if isbn_meta:
+                return Book(
+                    isbn_meta["ISBN-13"],
+                    isbn_meta["Title"],
+                    isbn_meta["Authors"],
+                    isbn_meta["Publisher"],
+                    isbn_meta["Year"],
+                    isbn_meta["Language"]
+                )
+
+                # Writing the title of the book on the frame (Currently corners are not in this scope)
+                # cv2.putText(img, isbn_meta["Title"], (int(corners[0][0][0]), int(corners[0][0][1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color=(0, 255, 0), thickness=2)
+            else:
+                print("Invalid or Unknown ISBN")
 
         cv2.waitKey(1)
-
-def GetResult():
-    """ 
-    Getter for the book dictionary 
-    """
-    return book_dictionary
-
-def GatherBook():
-    book = Book(
-        book_dictionary["ISBN-13"],
-        book_dictionary["Title"],
-        book_dictionary["Authors"],
-        book_dictionary["Publisher"],
-        book_dictionary["Year"],
-        book_dictionary["Language"])
-    return book
+    
+    # If the user exits barcode detection
+    return False
