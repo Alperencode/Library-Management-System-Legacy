@@ -17,15 +17,36 @@ class BookDB(SQLiteDataBase):
             )"""
         self.ExecuteSQL(query)
 
+    def UpdateBook(self, book):
+        if not isinstance(book, Book):
+            raise TypeError("book must be an instance of Book class")
+        
+        db_check = self.SearchByArg("isbn", book.GetISBN())
+
+        if db_check:
+            self.DeleteBook(book.GetISBN())
+            self.AddBook(book)
+        else:
+            raise ValueError("book not found in database")
+
     def AddBook(self, book):
-        self.AddToTable("books", (   
-            book.GetISBN(),
-            book.GetTitle(),
-            book.GetAuthor(),
-            book.GetPublisher(),
-            book.GetYear(),
-            book.GetLanguage()
-        ))
+        if not isinstance(book, Book):
+            raise TypeError("book must be an instance of Book class")
+        
+        db_check = self.SearchByArg("isbn", book.GetISBN())
+        
+        if db_check:
+            self.UpdateBook(book)
+            return
+        else:
+            self.AddToTable("books", (   
+                book.GetISBN(),
+                book.GetTitle(),
+                book.GetAuthor(),
+                book.GetPublisher(),
+                book.GetYear(),
+                book.GetLanguage()
+            ))
 
     def GetBooks(self):
         return self.GetTable("books")
