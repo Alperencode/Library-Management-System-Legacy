@@ -14,8 +14,11 @@ def main():
     # Save to database
     if book:
         db.AddBook(book)
+    else:
+        print("Invalid ISBN, no book added to the database")
 
     # Print the database content (Debug)
+    print("\nDatabase content:")
     for book in db.GetBooks():
         print(book)
 

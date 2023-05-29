@@ -3,9 +3,6 @@ import cv2
 import numpy as np
 from classes.book import Book
 
-# Global variables
-book_dictionary = {}
-
 def ParseISBN(isbn):
     """
     Parsing the ISBN number
@@ -41,6 +38,8 @@ def ReadISBN(cap):
     """
     Read the ISBN from the barcode
     """
+    INVALID = 0
+
     while cv2.waitKey(1) == -1:
         # Read the frame
         success, img = cap.read()
@@ -69,12 +68,18 @@ def ReadISBN(cap):
                     isbn_meta["Year"],
                     isbn_meta["Language"]
                 )
-
-                # Writing the title of the book on the frame (Currently corners are not in this scope)
-                # cv2.putText(img, isbn_meta["Title"], (int(corners[0][0][0]), int(corners[0][0][1])-5), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color=(0, 255, 0), thickness=2)
             else:
-                print("Invalid or Unknown ISBN")
+                INVALID += 1
+                cv2.putText(img_flip, "Invalid ISBN", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                cv2.imshow('User', img_flip)
+        else:
+            if INVALID >= 5:
+                break
 
+            cv2.putText(img_flip, "No barcode detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.imshow('User', img_flip)
+
+        # Wait for the user to press a key to exit (Optional)
         cv2.waitKey(1)
     
     # If the user exits barcode detection
