@@ -46,7 +46,7 @@ def test_CreateBookTable(book):
     for index, item in enumerate(book.GetBookInfo().keys()):
         assert table_info[index][1] == item
 
-def test_AddBook(db, new_book):
+def test_AddBook(db, new_book, book):
     db.AddBook(new_book)
     
     db.cursor.execute("SELECT * FROM books")
@@ -55,6 +55,22 @@ def test_AddBook(db, new_book):
     assert len(table_info) == 2
     for i in range(6):
         assert table_info[1][i] == new_book.GetBookInfoAsTuple()[i]
+
+    db.AddBook(book)
+    assert len(table_info) == 2
+
+def test_UpdateBook(db, new_book, book):
+    db.UpdateBook(book)
+    
+    db.cursor.execute("SELECT * FROM books")
+    table_info = db.cursor.fetchall()
+
+    assert len(table_info) == 1
+    for i in range(6):
+        assert table_info[0][i] == book.GetBookInfoAsTuple()[i]
+
+    with pytest.raises(ValueError):
+        db.UpdateBook(new_book)
 
 def test_GetBooks(db, book):
     table_info = db.GetBooks()
@@ -72,7 +88,6 @@ def test_DeleteBook(db, book):
     assert len(table_info) == 0
     with pytest.raises(IndexError):
         table_info[0][0]
-
 
 def test_SearchByArg(db, book):
     table_info = db.SearchByArg('title', 'Physics')

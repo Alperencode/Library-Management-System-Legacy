@@ -1,4 +1,4 @@
-from methods.methods import cv2, ReadISBN, GetResult, GatherBook
+from methods.methods import cv2, ReadISBN
 from database.BookDB import BookDB
 
 def main():
@@ -9,14 +9,16 @@ def main():
     cap = cv2.VideoCapture(0)
     cap.set(3, 640)
 
-    # Read the ISBNs
-    ReadISBN(cap)
+    book = ReadISBN(cap)
 
     # Save to database
-    if GetResult():
-        db.AddBook(GatherBook())
+    if book:
+        db.AddBook(book)
+    else:
+        print("Invalid ISBN, no book added to the database")
 
     # Print the database content (Debug)
+    print("\nDatabase content:")
     for book in db.GetBooks():
         print(book)
 
