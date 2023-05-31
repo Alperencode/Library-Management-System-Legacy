@@ -1,22 +1,32 @@
-from isbnlib import *
-import cv2
-import numpy as np
+import cv2, numpy as np
+from isbnlib import is_isbn10, is_isbn13, meta
 from classes.book import Book
 
 def ParseISBN(isbn):
     """
-    Parsing the ISBN number
-    If ISBN is valid, return the metadata
-    Else return False
+    Parses and returns the associated metadata for the provided ISBN if valid.
+
+    Args:
+        isbn: The ISBN number to be parsed.
+
+    Returns:
+        dict or bool: ISBN metadata if valid, False otherwise.
     """
     if not is_isbn10(isbn) and not is_isbn13(isbn):
         return False
     else:
         return meta(isbn)
 
+
 def DetectBarcode(img):
     """
-    Detect barcode in the frame
+    Detects the barcode in the provided image and returns its data if found.
+
+    Args:
+        img: The OpenCV video capture representing the image.
+
+    Returns:
+        str or bool: Barcode data as a string if valid, False otherwise.
     """
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     detector = cv2.barcode_BarcodeDetector()
@@ -33,10 +43,20 @@ def DetectBarcode(img):
 
         # Returning the barcode data
         return decoded_info[0]
+    return False
+
 
 def ReadISBN(cap):
     """
-    Read the ISBN from the barcode
+    Reads the ISBN from the barcode and returns the associated book if valid.
+
+    Args:
+        cap: The video capture object for reading frames.
+
+    Returns:
+        Book or bool:
+                The associated book if a valid ISBN is found.
+                False if no valid ISBN is detected or the user exits barcode detection.
     """
     INVALID = 0
 

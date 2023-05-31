@@ -1,4 +1,4 @@
-from methods.methods import cv2, ReadISBN
+from methods.ISBNFunctions import cv2, ReadISBN
 from database.BookDB import BookDB
 
 def main():
