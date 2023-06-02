@@ -12,6 +12,7 @@ def ParseISBN(isbn):
     Returns:
         dict or bool: ISBN metadata if valid, False otherwise.
     """
+    isbn = str(isbn)
     if not is_isbn10(isbn) and not is_isbn13(isbn):
         return False
     else:
@@ -65,7 +66,7 @@ def ReadISBN(cap):
         success, img = cap.read()
         
         # Flip the image for mirror effect
-        img_flip = cv2.flip(img,1)
+        img_flip = cv2.flip(img, 1)
 
         # Show the frame
         cv2.imshow('User', img_flip)
