@@ -38,7 +38,7 @@ class SQLiteDataBase:
         self.conn.commit()
 
     def AddToTable(self, tableName, parameters=None):
-        if not parameters:
+        if (not parameters) or (not tableName):
             return
         tableName = SQLiteDataBase.SanitizeName(tableName)
         query = "INSERT INTO {} VALUES ({})".format(

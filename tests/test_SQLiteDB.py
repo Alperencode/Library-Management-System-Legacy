@@ -48,6 +48,16 @@ def test_AddToTable_without_arguments(db):
     with pytest.raises(IndexError):
         table_info[0][0]
 
+def test_AddToTable_without_table_name(db):
+    db.AddToTable(None, (1, 'test'))
+    
+    db.cursor.execute("SELECT * FROM test")
+    table_info = db.cursor.fetchall()
+    
+    assert len(table_info) == 0
+    with pytest.raises(IndexError):
+        table_info[0][0]
+
 def test_GetTable(db):
     db.AddToTable("test", (15, 'test'))
     
@@ -83,3 +93,8 @@ def test_database_name_with_control_characters():
     database_name = "my_database\n"
     expected = "my_database"
     assert SQLiteDataBase.SanitizeName(database_name) == expected
+
+def test_database_name_with_empty_string():
+    database_name = ""
+    with pytest.raises(ValueError):
+        SQLiteDataBase.SanitizeName(database_name)
