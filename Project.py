@@ -1,10 +1,11 @@
 from methods.ISBNFunctions import cv2, ReadISBN
 from database.BookDB import BookDB
 
+
 def main():
     # Creating the database
     db = BookDB("books.db")
-    
+
     # Starting the capture
     cap = cv2.VideoCapture(0)
     cap.set(3, 640)
@@ -21,6 +22,7 @@ def main():
     print("\nDatabase content:")
     for book in db.GetBooks():
         print(book)
+
 
 if __name__ == "__main__":
     main()

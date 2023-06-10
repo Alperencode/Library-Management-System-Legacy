@@ -1,5 +1,5 @@
 from database.SQLiteDB import SQLiteDataBase
-from classes.book import Book
+
 
 class BookDB(SQLiteDataBase):
     def __init__(self, databaseName):
@@ -33,7 +33,7 @@ class BookDB(SQLiteDataBase):
             self.UpdateBook(book)
             return
         else:
-            self.AddToTable("books", (   
+            self.AddToTable("books", (
                 book.GetISBN(),
                 book.GetTitle(),
                 book.GetAuthor(),

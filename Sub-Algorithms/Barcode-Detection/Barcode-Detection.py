@@ -1,6 +1,5 @@
 # import the necessary packages
 import numpy as np
-import argparse
 import imutils
 import cv2
 
@@ -31,26 +30,29 @@ while cv2.waitKey(1) == -1:
     closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
 
     # perform a series of erosions and dilations
-    closed = cv2.erode(closed, None, iterations = 4)
-    closed = cv2.dilate(closed, None, iterations = 4)
+    closed = cv2.erode(closed, None, iterations=4)
+    closed = cv2.dilate(closed, None, iterations=4)
 
     # find the contours in the thresholded image, then sort the contours
     # by their area, keeping only the largest one
     cnts = cv2.findContours(closed.copy(), cv2.RETR_EXTERNAL,
-        cv2.CHAIN_APPROX_SIMPLE)
+                            cv2.CHAIN_APPROX_SIMPLE)
+
     cnts = imutils.grab_contours(cnts)
     try:
-        c = max(cnts, key = cv2.contourArea)
+        c = max(cnts, key=cv2.contourArea)
 
         # compute the rotated bounding box of the largest contour
         rect = cv2.minAreaRect(c)
-        box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)
+        box = cv2.cv.BoxPoints(rect) if imutils.is_cv2()\
+            else cv2.boxPoints(rect)
+
         box = np.int0(box)
 
         # draw a bounding box arounded the detected barcode and display the
         # image
         cv2.drawContours(image, [box], -1, (0, 255, 0), 3)
-    except:
+    except Exception:
         pass
 
     cv2.imshow("Image", image)

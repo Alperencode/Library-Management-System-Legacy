@@ -1,6 +1,8 @@
-import cv2, numpy as np
+import cv2
+import numpy as np
 from isbnlib import is_isbn10, is_isbn13, meta
 from classes.book import Book
+
 
 def ParseISBN(isbn):
     """
@@ -33,7 +35,8 @@ def DetectBarcode(img):
     detector = cv2.barcode_BarcodeDetector()
 
     # Detecting the barcode
-    # Respectively: validation, barcode data, decode type, points of the barcode
+    # Respectively:
+    # validation, barcode data, decode type, points of the barcode
     valid, decoded_info, decoded_type, corners = detector.detectAndDecode(gray)
 
     # If barcode is valid
@@ -57,14 +60,14 @@ def ReadISBN(cap):
     Returns:
         Book or bool:
                 The associated book if a valid ISBN is found.
-                False if no valid ISBN is detected or the user exits barcode detection.
+                False if no valid ISBN.
     """
     INVALID = 0
 
     while cv2.waitKey(1) == -1:
         # Read the frame
         success, img = cap.read()
-        
+
         # Flip the image for mirror effect
         img_flip = cv2.flip(img, 1)
 
@@ -73,7 +76,7 @@ def ReadISBN(cap):
 
         # Detect barcode
         barcode = DetectBarcode(img_flip)
-        
+
         # If barcode is valid
         if barcode:
             # Try to parse the ISBN
@@ -91,17 +94,21 @@ def ReadISBN(cap):
                 )
             else:
                 INVALID += 1
-                cv2.putText(img_flip, "Invalid ISBN", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                cv2.putText(
+                    img_flip, "Invalid ISBN", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                 cv2.imshow('User', img_flip)
         else:
             if INVALID >= 5:
                 break
 
-            cv2.putText(img_flip, "No barcode detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(
+                img_flip, "No barcode detected", (10, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.imshow('User', img_flip)
 
         # Wait for the user to press a key to exit (Optional)
         cv2.waitKey(1)
-    
+
     # If the user exits barcode detection
     return False

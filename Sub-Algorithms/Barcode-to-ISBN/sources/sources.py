@@ -1,9 +1,9 @@
-from pyzbar.pyzbar import decode
-from isbnlib import *
+from isbnlib import meta, is_isbn10, is_isbn13
 
 # Global variables
 result_dictionary = {}
 last_book = ""
+
 
 def ParseISBN(isbn):
     """
@@ -15,6 +15,7 @@ def ParseISBN(isbn):
         return False
     else:
         return meta(isbn)
+
 
 def ParseMeta(isbn_meta):
     """
@@ -29,19 +30,24 @@ def ParseMeta(isbn_meta):
     for key, value in isbn_meta.items():
         result_dictionary[key] = value
 
+
 def OutputTXT():
     """
     Output the result dictionary to a txt file
     """
-    with open('output.txt', 'w',encoding='utf-8') as f:
+    with open('output.txt', 'w', encoding='utf-8') as f:
         for key, value in result_dictionary.items():
             if type(result_dictionary[key]) == list:
                 f.write(f"{key}: ")
                 for item in result_dictionary[key]:
-                    f.write(f"{item}, ") if item != result_dictionary[key][-1] else f.write(f"{item}")
+                    if item != result_dictionary[key][-1]:
+                        f.write(f"{item}, ")
+                    else:
+                        f.write(f"{item}")
                 f.write("\n")
             else:
                 f.write(f"{key}: {value}\n")
+
 
 def GetResult():
     """ Getter for the result dictionary """
