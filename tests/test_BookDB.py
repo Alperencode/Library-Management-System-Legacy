@@ -7,7 +7,7 @@ import pytest
 def db():
     db = BookDB(':memory:')
     db.ExecuteSQL(
-        "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO book VALUES (?, ?, ?, ?, ?, ?)",
         (9780131495081,
          'Physics For Scientists And Engineers With Modern Physics',
          'Douglas C. Giancoli', 'Pearson Education', 2008, 'en')
@@ -42,7 +42,7 @@ def test_CreateBookTable(book):
     db = BookDB(':memory:')
     db.CreateBookTable()
 
-    db.cursor.execute("PRAGMA table_info(books)")
+    db.cursor.execute("PRAGMA table_info(book)")
     table_info = db.cursor.fetchall()
 
     assert len(table_info) == 6
@@ -53,7 +53,7 @@ def test_CreateBookTable(book):
 def test_AddBook(db, new_book, book):
     db.AddBook(new_book)
 
-    db.cursor.execute("SELECT * FROM books")
+    db.cursor.execute("SELECT * FROM book")
     table_info = db.cursor.fetchall()
 
     assert len(table_info) == 2
@@ -67,7 +67,7 @@ def test_AddBook(db, new_book, book):
 def test_UpdateBook(db, new_book, book):
     db.UpdateBook(book)
 
-    db.cursor.execute("SELECT * FROM books")
+    db.cursor.execute("SELECT * FROM book")
     table_info = db.cursor.fetchall()
 
     assert len(table_info) == 1
@@ -89,7 +89,7 @@ def test_GetBooks(db, book):
 def test_DeleteBook(db, book):
     db.DeleteBook(book.GetISBN())
 
-    db.cursor.execute("SELECT * FROM books")
+    db.cursor.execute("SELECT * FROM book")
     table_info = db.cursor.fetchall()
 
     assert len(table_info) == 0

@@ -82,7 +82,7 @@ class SignUpUI(ctk.CTk):
         self.SetEmail(self.email_entry.get())
         self.SetPassword(self.password_entry.get())
 
-        if not (self.GetEmail() or self.GetPassword()):
+        if not (self.GetEmail() and self.GetPassword()):
             WarningMessage("Please enter email and password")
             return
 
@@ -159,7 +159,7 @@ class LoginUI(ctk.CTk):
         self.SetEmail(self.email_entry.get())
         self.SetPassword(self.password_entry.get())
 
-        if not (self.GetEmail() or self.GetPassword()):
+        if not (self.GetEmail() and self.GetPassword()):
             WarningMessage("Please enter email and password")
             return
 
