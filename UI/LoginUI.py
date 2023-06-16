@@ -1,26 +1,28 @@
 import sys
 import re
 import customtkinter as ctk
+from CTkMessagebox import CTkMessagebox
 sys.path.append('../Library-Book-Matching-System')
 # from database.SQLiteDB import SQLiteDataBase
 
 FONT_FAM = "Comfortaa"
 
 
+def WarningMessage(text):
+    CTkMessagebox(
+        title="Warning",
+        message=text,
+        icon="warning", option_1="Retry"
+        )
+
+
 def ValidateEmail(email):
-    pat = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+[a-z]{1,3}$"
-    print(type(email))
-    print("email:", email)
+    pat = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
     if re.match(pat, email):
         return True
 
-    warning = ctk.CTkToplevel()
-    warning.title("Warning")
-    ctk.CTkLabel(
-        warning,
-        text="Please enter a valid e-mail\n\nExample: email@example.com",
-        font=(FONT_FAM, 20, "bold")).pack(pady=20, padx=20)
+    WarningMessage("Please enter a valid e-mail\n\nExample: email@example.com")
 
     return False
 
@@ -38,6 +40,18 @@ class SignUpUI(ctk.CTk):
         self.__password = None
 
         self.CreateUI()
+
+    def GetEmail(self):
+        return self.__email
+
+    def GetPassword(self):
+        return self.__password
+
+    def SetEmail(self, email):
+        self.__email = email
+
+    def SetPassword(self, passwd):
+        self.__password = passwd
 
     def CreateUI(self):
         # Title
@@ -65,10 +79,15 @@ class SignUpUI(ctk.CTk):
             ).pack(pady=50)
 
     def SignUp(self):
-        self.__email = self.email_entry.get()
-        self.__password = self.password_entry.get()
+        self.SetEmail(self.email_entry.get())
+        self.SetPassword(self.password_entry.get())
 
-        if ValidateEmail(self.__email):
+        if not (self.GetEmail() or self.GetPassword()):
+            WarningMessage("Please enter email and password")
+            return
+
+        if ValidateEmail(self.GetEmail()):
+            # Create user
             pass
 
 
@@ -86,6 +105,18 @@ class LoginUI(ctk.CTk):
         self.__password = None
 
         self.CreateUI()
+
+    def GetEmail(self):
+        return self.__email
+
+    def GetPassword(self):
+        return self.__password
+
+    def SetEmail(self, email):
+        self.__email = email
+
+    def SetPassword(self, passwd):
+        self.__password = passwd
 
     def CreateUI(self):
         # Title
@@ -125,10 +156,15 @@ class LoginUI(ctk.CTk):
         signUpApp.mainloop()
 
     def Login(self):
-        self.__email = self.email_entry.get()
-        self.__password = self.password_entry.get()
+        self.SetEmail(self.email_entry.get())
+        self.SetPassword(self.password_entry.get())
 
-        if ValidateEmail(self.__email):
+        if not (self.GetEmail() or self.GetPassword()):
+            WarningMessage("Please enter email and password")
+            return
+
+        if ValidateEmail(self.GetEmail()):
+            # Login user
             pass
 
 

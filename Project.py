@@ -1,27 +1,36 @@
 from methods.ISBNFunctions import cv2, ReadISBN
 from database.BookDB import BookDB
+from UI.LoginUI import LoginUI
 
 
 def main():
     # Creating the database
-    db = BookDB("books.db")
+    db = BookDB("book.db")
 
-    # Starting the capture
-    cap = cv2.VideoCapture(0)
-    cap.set(3, 640)
+    # Login Screen
+    login = LoginUI()
+    login.mainloop()
 
-    book = ReadISBN(cap)
+    # Temporary variable to debug
+    debug = True
 
-    # Save to database
-    if book:
-        db.AddBook(book)
-    else:
-        print("Invalid ISBN, no book added to the database")
+    if debug:
+        # Starting the capture
+        cap = cv2.VideoCapture(0)
+        cap.set(3, 640)
 
-    # Print the database content (Debug)
-    print("\nDatabase content:")
-    for book in db.GetBooks():
-        print(book)
+        book = ReadISBN(cap)
+
+        # Save to database
+        if book:
+            db.AddBook(book)
+        else:
+            print("Invalid ISBN, no book added to the database")
+
+        # Print the database content (Debug)
+        print("\nDatabase content:")
+        for book in db.GetBooks():
+            print(book)
 
 
 if __name__ == "__main__":
