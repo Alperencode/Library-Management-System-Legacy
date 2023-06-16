@@ -7,7 +7,7 @@ class BookDB(SQLiteDataBase):
         self.CreateBookTable()
 
     def CreateBookTable(self):
-        query = """CREATE TABLE IF NOT EXISTS books (
+        query = """CREATE TABLE IF NOT EXISTS book (
             isbn INTEGER PRIMARY KEY,
             title TEXT,
             author TEXT,
@@ -33,7 +33,7 @@ class BookDB(SQLiteDataBase):
             self.UpdateBook(book)
             return
         else:
-            self.AddToTable("books", (
+            self.AddToTable("book", (
                 book.GetISBN(),
                 book.GetTitle(),
                 book.GetAuthor(),
@@ -43,17 +43,17 @@ class BookDB(SQLiteDataBase):
             ))
 
     def GetBooks(self):
-        return self.GetTable("books")
+        return self.GetTable("book")
 
     def DeleteBook(self, isbn):
-        query = "DELETE FROM books WHERE isbn = ?"
+        query = "DELETE FROM book WHERE isbn = ?"
         self.ExecuteSQL(query, (isbn,))
 
     def SearchByArg(self, arg, value):
         """
-        Example query: SELECT * FROM books WHERE (arg) LIKE (value)
+        Example query: SELECT * FROM book WHERE (arg) LIKE (value)
         """
-        query = "SELECT * FROM books WHERE {} LIKE ?".format(arg)
+        query = "SELECT * FROM book WHERE {} LIKE ?".format(arg)
         self.cursor.execute(query, ('%' + str(value) + '%',))
         return self.cursor.fetchall()
 
