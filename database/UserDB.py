@@ -8,19 +8,40 @@ class UserDB(SQLiteDataBase):
         self.CreateUserTable()
 
     def CreateUserTable(self):
-        pass
+        query = """CREATE TABLE IF NOT EXISTS user (
+            email TEXT PRIMARY KEY,
+            password TEXT
+            )"""
+        self.ExecuteSQL(query)
+
+    def AddUser(self, user):
+        db_check = self.SearchByArg("email", user.GetEmail())
+
+        if db_check:
+            # User already exists (Warning here)
+            print("User already exists (DEBUG)")
+            return
+
+        self.AddToTable("user", (
+            user.GetEmail(),
+            user.GetPassword()
+        ))
 
     def UpdateUser(self, user):
-        pass
+        db_check = self.SearchByArg("email", user.GetEmail())
 
-    def AddBUser(self, user):
-        pass
+        if db_check:
+            self.DeleteUser(user)
+            self.AddUser(user)
+        else:
+            raise ValueError("user not found in database")
 
     def GetUsers(self):
-        pass
+        return self.GetTable("user")
 
-    def DeleteUser(self, id):
-        pass
+    def DeleteUser(self, user):
+        query = "DELETE FROM user WHERE email = ?"
+        self.ExecuteSQL(query, (user.GetEmail()))
 
     def SearchByArg(self, arg, value):
         """
