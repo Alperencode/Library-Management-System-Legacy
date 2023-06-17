@@ -37,8 +37,9 @@ To get started with the Library Book Matching System, follow these steps using y
    - Once the system is running, it will prompt you to scan a book's ISBN code using a barcode scanner.
    - Follow the instructions provided by the system to retrieve detailed information about the book, including its title and author.
 
-## Sample Image
+## Sample Images
 
+<img src="images/Login-Sample.png">
 <img src="images/Project-Sample.png">
 
 <br>
