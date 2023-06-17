@@ -21,7 +21,7 @@ class BookDB(SQLiteDataBase):
         db_check = self.SearchByArg("isbn", book.GetISBN())
 
         if db_check:
-            self.DeleteBook(book.GetISBN())
+            self.DeleteBook(book)
             self.AddBook(book)
         else:
             raise ValueError("book not found in database")
@@ -32,22 +32,22 @@ class BookDB(SQLiteDataBase):
         if db_check:
             self.UpdateBook(book)
             return
-        else:
-            self.AddToTable("book", (
-                book.GetISBN(),
-                book.GetTitle(),
-                book.GetAuthor(),
-                book.GetPublisher(),
-                book.GetYear(),
-                book.GetLanguage()
-            ))
+
+        self.AddToTable("book", (
+            book.GetISBN(),
+            book.GetTitle(),
+            book.GetAuthor(),
+            book.GetPublisher(),
+            book.GetYear(),
+            book.GetLanguage()
+        ))
 
     def GetBooks(self):
         return self.GetTable("book")
 
-    def DeleteBook(self, isbn):
+    def DeleteBook(self, book):
         query = "DELETE FROM book WHERE isbn = ?"
-        self.ExecuteSQL(query, (isbn,))
+        self.ExecuteSQL(query, (book.GetISBN(),))
 
     def SearchByArg(self, arg, value):
         """

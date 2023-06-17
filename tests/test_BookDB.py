@@ -87,7 +87,7 @@ def test_GetBooks(db, book):
 
 
 def test_DeleteBook(db, book):
-    db.DeleteBook(book.GetISBN())
+    db.DeleteBook(book)
 
     db.cursor.execute("SELECT * FROM book")
     table_info = db.cursor.fetchall()
