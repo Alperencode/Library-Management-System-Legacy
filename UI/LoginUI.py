@@ -2,8 +2,9 @@ import sys
 import re
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
+from classes.user import User
+from database.UserDB import UserDB
 sys.path.append('../Library-Book-Matching-System')
-# from database.SQLiteDB import SQLiteDataBase
 
 FONT_FAM = "Comfortaa"
 
@@ -86,9 +87,30 @@ class SignUpUI(ctk.CTk):
             WarningMessage("Please enter email and password")
             return
 
-        if ValidateEmail(self.GetEmail()):
-            # Create user
-            pass
+        if not ValidateEmail(self.GetEmail()):
+            return
+
+        # Debug Section
+        user = User(self.GetEmail(), self.GetPassword())
+        userDB = UserDB(':memory:')
+
+        # Database check not working properly
+        db_check = userDB.SearchByArg("email", self.GetEmail())
+        print("db_check: ", db_check)
+        if db_check:
+            WarningMessage("This email already exists.")
+            return
+
+        userDB.AddUser(user)
+
+        print(f"Sign-up, email {self.GetEmail()}, passwd: {self.GetPassword()}")
+        print("\nUsers:")
+        users = userDB.GetUsers()
+        for user in users:
+            print(user)
+        # End of Debug
+
+        return True
 
 
 class LoginUI(ctk.CTk):
@@ -163,9 +185,24 @@ class LoginUI(ctk.CTk):
             WarningMessage("Please enter email and password")
             return
 
-        if ValidateEmail(self.GetEmail()):
-            # Login user
-            pass
+        if not ValidateEmail(self.GetEmail()):
+            return
+
+        # Debug Section
+        userDB = UserDB(':memory:')
+
+        # This search not working properly
+        user = userDB.SearchByArg("email", self.GetEmail())
+
+        if not user:
+            WarningMessage("User not found.")
+            return
+
+        # This part need to change
+        if user[2] == self.GetPassword():
+            # login
+            print(f"Login, email {self.GetEmail()}, passwd: {self.GetPassword()}")  # Debug
+        # End of Debug
 
 
 if __name__ == "__main__":
