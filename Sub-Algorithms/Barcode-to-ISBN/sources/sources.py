@@ -37,7 +37,7 @@ def OutputTXT():
     """
     with open('output.txt', 'w', encoding='utf-8') as f:
         for key, value in result_dictionary.items():
-            if type(result_dictionary[key]) == list:
+            if type(result_dictionary[key]) is list:
                 f.write(f"{key}: ")
                 for item in result_dictionary[key]:
                     if item != result_dictionary[key][-1]:

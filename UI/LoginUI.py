@@ -4,7 +4,7 @@ import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 from classes.user import User
 from database.UserDB import UserDB
-sys.path.append('../Library-Book-Matching-System')
+sys.path.append('../Library-Management-System')
 
 FONT_FAM = "Comfortaa"
 
