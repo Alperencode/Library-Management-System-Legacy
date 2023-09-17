@@ -1,31 +1,11 @@
 import sys
-import re
 import customtkinter as ctk
-from CTkMessagebox import CTkMessagebox
 from classes.user import User
 from database.UserDB import UserDB
+from UI.widgets import WarningMessage
 sys.path.append('../Library-Management-System')
 
 FONT_FAM = "Comfortaa"
-
-
-def WarningMessage(text):
-    CTkMessagebox(
-        title="Warning",
-        message=text,
-        icon="warning", option_1="Retry"
-        )
-
-
-def ValidateEmail(email):
-    pat = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-
-    if re.match(pat, email):
-        return True
-
-    WarningMessage("Please enter a valid e-mail\n\nExample: email@example.com")
-
-    return False
 
 
 class SignUpUI(ctk.CTk):
@@ -87,7 +67,9 @@ class SignUpUI(ctk.CTk):
             WarningMessage("Please enter email and password")
             return
 
-        if not ValidateEmail(self.GetEmail()):
+        if not User.ValidateEmail(self.GetEmail()):
+            WarningMessage(
+                "Please enter a valid e-mail\n\nExample: email@example.com")
             return
 
         # Debug Section
@@ -185,7 +167,9 @@ class LoginUI(ctk.CTk):
             WarningMessage("Please enter email and password")
             return
 
-        if not ValidateEmail(self.GetEmail()):
+        if not User.ValidateEmail(self.GetEmail()):
+            WarningMessage(
+                "Please enter a valid e-mail\n\nExample: email@example.com")
             return
 
         # Debug Section
