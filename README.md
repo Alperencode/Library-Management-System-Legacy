@@ -1,5 +1,15 @@
 # Library Book Matching System
 
+## Table of Contents
+- [Library Book Matching System](#library-book-matching-system)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Usage](#usage)
+  - [Sample Images](#sample-images)
+  - [Future Work](#future-work)
+  - [Directory Structure](#directory-structure)
+  - [License](#license)
+
 ## Overview
 
 This project is a library book matching system developed for a personal project. The aim of the project is to create an efficient and secure library experience by matching books' ISBN codes using barcode recognition and a **SQLite** database.
@@ -112,3 +122,7 @@ Library-Book-Matching-System
 ├── README.md
 └── requirements.txt
 ```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
