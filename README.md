@@ -1,14 +1,31 @@
-# Library Book Matching System
+# Library Management System (Legacy)
 
 ## Table of Contents
-- [Library Book Matching System](#library-book-matching-system)
+- [Library Management System (Legacy)](#library-management-system-legacy)
   - [Table of Contents](#table-of-contents)
+  - [Before Start](#before-start)
   - [Overview](#overview)
   - [Usage](#usage)
   - [Sample Images](#sample-images)
   - [Future Work](#future-work)
   - [Directory Structure](#directory-structure)
   - [License](#license)
+
+## Before Start
+
+> [!IMPORTANT]  
+> This project is fully refactored and completed in this repository: [library-management-system](https://github.com/Alperencode/Library-Management-System)
+
+Although this is an uncompleted projects it has many algorithms inside it:
+
+- [Barcode detection algorithm](Sub-Algorithms/Barcode-Detection)
+- [Face detection algorithm](Sub-Algorithms/Face-Detection)
+- [Barcode to ISBN converter](Sub-Algorithms/Barcode-to-ISBN)
+- [Yolo usage in Python (Yolo 320 and Yolo tiny)](Sub-Algorithms/Yolo)
+- [SQLite usage in Python](database)
+- [Unit-tests](tests)
+- [Login UI](UI) ([customtkinter](https://customtkinter.tomschimansky.com))
+
 
 ## Overview
 
@@ -23,11 +40,11 @@ To get started with the Library Book Matching System, follow these steps using y
 1. Clone the repository:
     - Clone the project repository
         ```bash
-        git clone https://github.com/Alperencode/Library-Management-System.git
+        git clone https://github.com/Alperencode/Library-Management-System-Legacy.git
         ```
     - Navigate to project directory
         ```bash
-        cd Library-Management-System
+        cd Library-Management-System-Legacy
         ```
 
 2. Install Dependencies:
